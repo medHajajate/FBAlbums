@@ -7,9 +7,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.elhaj.med.fbalbums.R;
+import com.elhaj.med.fbalbums.adapters.AlbumGridAdapter;
+import com.elhaj.med.fbalbums.models.Album;
 import com.elhaj.med.fbalbums.utilities.DownloadImageTask;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -36,6 +39,9 @@ public class MainActivity extends AppCompatActivity {
     TextView nameUserTxt;
     String userId;
 
+    List<Album> fbalbum;
+    GridView albumGrid;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,12 +52,14 @@ public class MainActivity extends AppCompatActivity {
         imgProfileUser = (ImageView)findViewById(R.id.imgProfile);
         nameUserTxt = (TextView)findViewById(R.id.txt_nameUser);
 
+        albumGrid = (GridView) findViewById(R.id.grid_album);
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getInfoFBAcount();
             }
         });
+
 
     }
 
@@ -92,7 +100,23 @@ public class MainActivity extends AppCompatActivity {
                                                     try{
                                                         JSONObject json = response.getJSONObject();
                                                         JSONArray jarray = json.getJSONArray("data");
+                                                        fbalbum = new ArrayList<>();
+                                                        for(int i = 0; i < jarray.length(); i++) {
+                                                            JSONObject oneAlbum = jarray.getJSONObject(i);
+                                                            albumID = oneAlbum.getString("id");
+                                                            albumName=oneAlbum.getString("name");
+                                                            albumCount=oneAlbum.getString("photo_count");
+                                                            albumUrl=oneAlbum.getJSONObject("picture").getJSONObject("data").getString("url");
+                                                            Album fba = new Album();
+                                                            fba.setId(albumID);
+                                                            fba.setName(albumName);
+                                                            fba.setUrl(albumUrl);
+                                                            fba.setCount(albumCount);
+                                                            fbalbum.add(fba);
 
+                                                        }
+                                                        AlbumGridAdapter albumAdp = new AlbumGridAdapter(getApplicationContext(), R.layout.album_grid, fbalbum);
+                                                        albumGrid.setAdapter(albumAdp);
                                                     }
                                                     catch(JSONException e){
                                                         e.printStackTrace();

@@ -49,4 +49,24 @@
             />
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/layout_grid"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <GridView
+            android:id="@+id/grid_album"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="20dp"
+            android:layout_weight="1"
+            android:columnWidth="100dp"
+            android:gravity="center"
+            android:horizontalSpacing="30dp"
+            android:numColumns="2"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="30dp"></GridView>
+    </LinearLayout>
+
 </LinearLayout>
