@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import com.elhaj.med.fbalbums.R;
 import com.elhaj.med.fbalbums.adapters.AlbumGridAdapter;
 import com.elhaj.med.fbalbums.models.Album;
+import com.elhaj.med.fbalbums.models.Photo;
 import com.elhaj.med.fbalbums.utilities.DownloadImageTask;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -40,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
     String userId;
 
     List<Album> fbalbum;
+    ArrayList<Photo> fbphoto;
+
     GridView albumGrid;
 
     @Override
@@ -133,6 +137,67 @@ public class MainActivity extends AppCompatActivity {
                 parameters.putString("fields", "id,email,first_name,last_name,picture.type(large)");
                 request.setParameters(parameters);
                 request.executeAsync();
+
+                albumGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                        TextView title=(TextView)view.findViewById(R.id.album_title);
+                        final String chosenAlbumName = title.getText().toString();
+                        GraphRequest requestPhotos = new GraphRequest(
+                                AccessToken.getCurrentAccessToken(),
+                                "/me?fields=albums.fields(id,name,cover_photo,photos.fields(name,picture,source))",
+                                null,
+                                HttpMethod.GET,
+                                new GraphRequest.Callback() {
+                                    public void onCompleted(GraphResponse response) {
+                                        String albumName=null;
+                                        String photoUrl=null;
+
+                                        try{
+                                            JSONObject json = response.getJSONObject().getJSONObject("albums");
+
+                                            JSONArray jarray = json.getJSONArray("data");
+                                            fbphoto = new ArrayList<>();
+
+                                            for(int i = 0; i < jarray.length(); i++) {
+
+                                                JSONObject oneAlbum = jarray.getJSONObject(i);
+                                                albumName=oneAlbum.getString("name");
+
+                                                if(albumName.equals(chosenAlbumName)){
+
+                                                    JSONArray dataphotoUrl=oneAlbum.getJSONObject("photos").getJSONArray("data");
+                                                    for(int j =0;j< dataphotoUrl.length();j++){
+                                                        JSONObject onephoto = dataphotoUrl.getJSONObject(j);
+                                                        photoUrl=onephoto.getString("picture");
+                                                        Photo ph=new Photo();
+                                                        ph.setUrlPhoto(photoUrl);
+
+                                                        fbphoto.add(ph);
+
+                                                    }
+                                                }}
+                                            Intent intent = new Intent(getApplicationContext(), PhotosAlbumActivity.class);
+                                            Bundle bundle = new Bundle();
+                                            bundle.putParcelableArrayList("fbphotoList", fbphoto);
+                                            intent.putExtras(bundle);
+                                            startActivity(intent);
+
+
+
+                                        }
+                                        catch(JSONException e){
+                                            e.printStackTrace();
+                                        }
+                                    }}
+                        );
+                        requestPhotos.executeAsync();
+
+
+                    }
+                });
             }
             @Override
             public void onCancel() {

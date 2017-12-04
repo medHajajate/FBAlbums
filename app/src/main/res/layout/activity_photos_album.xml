@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activities.PhotosAlbumActivity">
+
+    <GridView
+        android:layout_height="match_parent"
+        android:id="@+id/photos_grid"
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:numColumns="2"
+        android:horizontalSpacing="30dp"
+        android:verticalSpacing="30dp"
+        android:layout_margin="30dp"
+        android:columnWidth="50dp"
+        android:gravity="center"
+        android:stretchMode="columnWidth"
+        tools:layout_editor_absoluteY="8dp"
+        tools:layout_editor_absoluteX="8dp">
+    </GridView>
+</LinearLayout>
