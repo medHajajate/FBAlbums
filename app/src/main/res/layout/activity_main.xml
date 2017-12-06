@@ -36,7 +36,7 @@
             android:id="@+id/txt_nameUser"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="user name"
+            android:text=""
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="10dp"
             />
@@ -48,11 +48,29 @@
             android:layout_marginTop="10dp"
             />
     </LinearLayout>
+    <LinearLayout
+        android:id="@+id/layout_button"
+        android:visibility="invisible"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <Button
+            android:id="@+id/show_album_button"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/round_clrblue"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"
+            android:text="Show my albums"/>
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/layout_grid"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:visibility="invisible"
         android:orientation="vertical">
 
         <GridView

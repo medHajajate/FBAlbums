@@ -1,8 +1,10 @@
 package com.elhaj.med.fbalbums.activities;
 
 import android.content.Intent;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
@@ -38,7 +40,19 @@ public class PhotosAlbumActivity extends AppCompatActivity {
                 bundle.putString("imageUrl", imageUrl);
                 intent.putExtras(bundle);
                 startActivity(intent);
+
             }
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // Respond to the action bar's Up/Home button
+            case android.R.id.home:
+                    finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

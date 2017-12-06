@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">FBAlbums</string>
+    <string name="app_name">My Albums</string>
     <string name="facebook_app_id">498622003851851</string>
     <string name="fb_login_protocol_scheme">fb498622003851851</string>
 </resources>
