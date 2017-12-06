@@ -211,6 +211,7 @@ public class MainActivity extends AppCompatActivity {
                                             Intent intent = new Intent(getApplicationContext(), PhotosAlbumActivity.class);
                                             Bundle bundle = new Bundle();
                                             bundle.putParcelableArrayList("fbphotoList", fbphoto);
+                                            bundle.putString("AlbumName", chosenAlbumName);
                                             intent.putExtras(bundle);
                                             startActivity(intent);
 

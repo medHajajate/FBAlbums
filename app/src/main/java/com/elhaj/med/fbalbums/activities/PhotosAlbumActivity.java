@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
@@ -27,6 +28,10 @@ public class PhotosAlbumActivity extends AppCompatActivity {
 
         Bundle bundle = getIntent().getExtras();
         photoslist = bundle.getParcelableArrayList("fbphotoList");
+
+        String albumName = bundle.getString("AlbumName");
+        Window window = getWindow();
+        window.setTitle(albumName);
 
         photoGrid=(GridView)findViewById(R.id.photos_grid);
         photoGrid.setAdapter(new PhotoGridAdapter(this, photoslist));
