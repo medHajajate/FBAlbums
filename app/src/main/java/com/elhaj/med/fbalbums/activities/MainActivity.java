@@ -1,5 +1,7 @@
 package com.elhaj.med.fbalbums.activities;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,6 +13,7 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.elhaj.med.fbalbums.R;
@@ -23,6 +26,7 @@ import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
@@ -76,6 +80,8 @@ public class MainActivity extends AppCompatActivity {
         gridLayout = (LinearLayout) findViewById(R.id.layout_grid);
 
         albumGrid = (GridView) findViewById(R.id.grid_album);
+
+        FacebookSdk.sdkInitialize(getApplicationContext());
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -282,6 +288,7 @@ public class MainActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_logOut) {
             disconnectFromFacebook();
+
             return true;
         }
 
@@ -290,7 +297,10 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void disconnectFromFacebook() {
-
+        final ProgressDialog progressBar = new ProgressDialog(MainActivity.this);
+        progressBar.setMessage("Log out ...");
+        progressBar.setCanceledOnTouchOutside(false);
+        progressBar.show();
         if (AccessToken.getCurrentAccessToken() == null) {
             return; // already logged out
         }
@@ -299,12 +309,12 @@ public class MainActivity extends AppCompatActivity {
                 .Callback() {
             @Override
             public void onCompleted(GraphResponse graphResponse) {
-
                 LoginManager.getInstance().logOut();
-
+                AccessToken.setCurrentAccessToken(null);
+                progressBar.dismiss();
+                startActivity(new Intent(MainActivity.this, MainActivity.class));
             }
         }).executeAsync();
-        startActivity(new Intent(MainActivity.this, MainActivity.class));
     }
 
 }

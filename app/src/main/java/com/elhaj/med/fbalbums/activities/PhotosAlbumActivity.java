@@ -30,8 +30,7 @@ public class PhotosAlbumActivity extends AppCompatActivity {
         photoslist = bundle.getParcelableArrayList("fbphotoList");
 
         String albumName = bundle.getString("AlbumName");
-        Window window = getWindow();
-        window.setTitle(albumName);
+        setTitle(albumName);
 
         photoGrid=(GridView)findViewById(R.id.photos_grid);
         photoGrid.setAdapter(new PhotoGridAdapter(this, photoslist));
